@@ -29,10 +29,9 @@ services:
     depends_on:
       - db
     environment:
-      MONGODB_URI: "mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@db:27017/valid-v2-db?authSource=admin"
+      MONGODB_URI: "mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@db:27017/transaction-db?authSource=admin"
       JWT_SECRET: ${JWT_SECRET}
-      ADMIN_EMAIL: ${ADMIN_EMAIL}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      DEFAULT_PASSWORD: ${DEFAULT_PASSWORD}
     ports:
       - "8000:8000"
     networks:

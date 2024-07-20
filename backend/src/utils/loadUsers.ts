@@ -14,7 +14,6 @@ export const loadUsers = async () => {
       } else {
         await User.create({
           ...user,
-          password: process.env.DEFAULT_PASSWORD,
         });
       }
     }

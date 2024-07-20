@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import connectDb from "./utils/connectDB";
 import { errorHandler } from "./middleware";
 import routes from "./routes";
+import connectRedis from "./utils/connectRedis";
 
 const app: Express = express();
 
@@ -14,6 +15,8 @@ app.use(bodyParser.json()); // Parse incoming JSON data
 app.use(cookieParser()); // Parse cookies
 
 connectDb();
+connectRedis();
+
 app.use("/", routes); // All routes
 app.use(errorHandler); // Error handling middleware
 

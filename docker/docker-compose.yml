@@ -1,0 +1,55 @@
+volumes:
+  mongodb-data:
+
+networks:
+  backend:
+  frontend:
+
+services:
+  db:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - backend
+    ports:
+      - "27017:27017"
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    environment:
+      MONGODB_URI: "mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@db:27017/valid-v2-db?authSource=admin"
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile
+      args:
+        - VITE_APP_API_URL
+    environment:
+      VITE_APP_API_URL: ${VITE_APP_API_URL}
+    ports:
+      - "3000:3000"
+    networks:
+      - frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules

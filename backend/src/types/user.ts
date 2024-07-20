@@ -1,7 +1,7 @@
-import { Document, Schema } from "mongoose";
+import { Document } from "mongoose";
 
 export interface UserType extends Document {
-  _id: Schema.Types.UUID;
+  _id: any;
   name: string;
   password: string;
   balance: number;

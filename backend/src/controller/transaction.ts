@@ -43,7 +43,7 @@ export const CreateTransaction = async (
       if (allTrnsactions) {
         await redisClient.del("all_transactions");
         const transactions = await Transaction.find({})
-          .select("_id details amount")
+          .select("_id details amount createdAt updatedAt")
           .populate({ path: "sender", select: "name _id" })
           .populate({ path: "receiver", select: "name _id" })
           .lean()
@@ -93,7 +93,7 @@ export const GetAllTransactions = async (
       return res.status(200).json(JSON.parse(cached_data));
     } else {
       const transactions = await Transaction.find({})
-        .select("_id details amount")
+        .select("_id details amount createdAt updatedAt")
         .populate({ path: "sender", select: "name _id" })
         .populate({ path: "receiver", select: "name _id" })
         .lean()
@@ -130,7 +130,7 @@ export const GetTransaction = async (
       const transaction = await Transaction.findById(
         req.params["transactionId"]
       )
-        .select("_id details amount")
+        .select("_id details amount createdAt updatedAt")
         .populate({ path: "sender", select: "name _id" })
         .populate({ path: "receiver", select: "name _id" })
         .lean()
@@ -196,7 +196,7 @@ export const DeleteTransaction = async (
       if (allTrnsactions) {
         await redisClient.del("all_transactions");
         const transactions = await Transaction.find({})
-          .select("_id details amount")
+          .select("_id details amount createdAt updatedAt")
           .populate({ path: "sender", select: "name _id" })
           .populate({ path: "receiver", select: "name _id" })
           .lean()

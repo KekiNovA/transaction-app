@@ -20,12 +20,12 @@ const transactionSchema: Schema = new Schema<TransactionType>(
       type: Number,
       required: true, // Amount of the transaction, required field
     },
-    senderId: {
+    sender: {
       type: Schema.Types.UUID,
       ref: "user", // References the 'user' collection
       required: true, // required field
     },
-    receiverId: {
+    receiver: {
       type: Schema.Types.UUID,
       ref: "user", // References the 'user' collection
       required: true, // required field

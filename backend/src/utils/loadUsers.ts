@@ -13,7 +13,9 @@ export const loadUsers = async () => {
         continue;
       } else {
         await User.create({
-          ...user,
+          _id: user.id,
+          name: user.name,
+          balance: user.balance,
         });
       }
     }

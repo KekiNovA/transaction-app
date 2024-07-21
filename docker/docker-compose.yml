@@ -46,6 +46,7 @@ services:
       MONGODB_URI: "mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@db:27017/transaction-db?authSource=admin"
       JWT_SECRET: ${JWT_SECRET}
       REDIS_URI: "redis://:${REDIS_PASSWORD}@redis:6379/0"
+      NODE_ENV: ${NODE_ENV}
     ports:
       - "8000:8000"
     networks:

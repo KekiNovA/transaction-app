@@ -175,12 +175,18 @@ export const DeleteTransaction = async (
         transaction.receiver
       );
       const sender: UserType | null = await User.findById(transaction.sender);
-      if (sender && receiver) {
+      if (
+        sender &&
+        receiver &&
+        receiver.balance >= parseFloat(transaction.amount.toString())
+      ) {
         // Adjust balances of sender and receiver
         sender.balance += parseFloat(transaction.amount.toString());
         receiver.balance -= parseFloat(transaction.amount.toString());
         sender.save();
         receiver.save();
+      } else {
+        throw new Error("Receiver has no balance");
       }
 
       // Remove transaction from Redis cache
@@ -203,7 +209,9 @@ export const DeleteTransaction = async (
           .exec();
         await redisClient.set("all_transactions", JSON.stringify(transactions));
       }
-      res.status(204);
+      res.status(200).json({
+        message: "Transaction Reverted",
+      });
     } else {
       throw new Error("Transaction does not exists");
     }

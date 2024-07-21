@@ -58,7 +58,9 @@ const CreateTransactionModal = () => {
         setSubmitting(false);
         resetForm();
         modalRef.current?.click();
-        window.location.reload();
+        setTimeout(function () {
+          window.location.reload();
+        }, 500);
       }
     },
   });

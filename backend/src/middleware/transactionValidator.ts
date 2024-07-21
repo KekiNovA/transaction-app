@@ -56,9 +56,11 @@ export const TransactionValidator = [
     .withMessage("Amount should be of type float and greater than 0."), // Check if amount is greater than 0.
   body()
     .custom(async (values) => {
-      const sender = await User.findById(values["senderId"]);
-      if (sender && (sender?.balance || 0) <= values.amount) {
-        throw new Error("Insufficient Balance.");
+      if (values["senderId"]) {
+        const sender = await User.findById(values["senderId"]);
+        if (sender && (sender?.balance || 0) <= values.amount) {
+          throw new Error("Insufficient Balance.");
+        }
       }
       return true;
     })

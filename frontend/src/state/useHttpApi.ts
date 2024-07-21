@@ -55,12 +55,14 @@ const buildApi = (setIsLoading: (isLoading: boolean) => void) => {
   const deleteTransaction = (transaction_id: string) =>
     delete_method(`api/transactions/${transaction_id}`);
   const createTransaction = (data: any) => post(`api/transactions`, data);
+  const getUsers = () => get(`api/users`);
 
   return {
     getAllTransactions,
     getTransaction,
     deleteTransaction,
     createTransaction,
+    getUsers,
   };
 };
 

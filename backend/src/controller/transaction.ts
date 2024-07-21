@@ -39,8 +39,8 @@ export const CreateTransaction = async (
         details: req.body["details"],
       });
       // Update redis cache
-      const allTrnsactions = await redisClient.get("all_transactions");
-      if (allTrnsactions) {
+      const allTransactions = await redisClient.get("all_transactions");
+      if (allTransactions) {
         await redisClient.del("all_transactions");
         const transactions = await Transaction.find({})
           .select("_id details amount createdAt updatedAt")
@@ -48,7 +48,7 @@ export const CreateTransaction = async (
           .populate({ path: "receiver", select: "name _id" })
           .lean()
           .exec();
-        await redisClient.set("all_transaction", JSON.stringify(transactions));
+        await redisClient.set("all_transactions", JSON.stringify(transactions));
       }
 
       // Return Response
@@ -88,7 +88,7 @@ export const GetAllTransactions = async (
 ) => {
   try {
     // Check Redis cache for all transactions
-    const cached_data = await redisClient.get("all_transaction");
+    const cached_data = await redisClient.get("all_transactions");
     if (cached_data) {
       return res.status(200).json(JSON.parse(cached_data));
     } else {
@@ -98,7 +98,7 @@ export const GetAllTransactions = async (
         .populate({ path: "receiver", select: "name _id" })
         .lean()
         .exec();
-      await redisClient.set("all_transaction", JSON.stringify(transactions));
+      await redisClient.set("all_transactions", JSON.stringify(transactions));
       return res.status(200).json(transactions);
     }
   } catch (error) {
@@ -192,8 +192,8 @@ export const DeleteTransaction = async (
       await Transaction.findByIdAndDelete(req.params["transactionId"]);
 
       // Update Redis cache for all transactions
-      const allTrnsactions = await redisClient.get("all_transactions");
-      if (allTrnsactions) {
+      const allTransactions = await redisClient.get("all_transactions");
+      if (allTransactions) {
         await redisClient.del("all_transactions");
         const transactions = await Transaction.find({})
           .select("_id details amount createdAt updatedAt")
@@ -201,7 +201,7 @@ export const DeleteTransaction = async (
           .populate({ path: "receiver", select: "name _id" })
           .lean()
           .exec();
-        await redisClient.set("all_transaction", JSON.stringify(transactions));
+        await redisClient.set("all_transactions", JSON.stringify(transactions));
       }
       res.status(204);
     } else {

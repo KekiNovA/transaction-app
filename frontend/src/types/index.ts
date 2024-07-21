@@ -13,3 +13,8 @@ export interface CardData {
   amount: number;
   details: string;
 }
+
+export interface userType {
+  _id: string;
+  name: string;
+}

@@ -18,7 +18,7 @@ const TransactionCard: React.FC<CardData> = ({
     try {
       setReversing(true);
       await deleteTransaction(_id)
-        .then((res) => {
+        .then(() => {
           toast.success("Transaction Reversed", {});
         })
         .catch((error) => {
